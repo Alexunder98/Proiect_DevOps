@@ -1,5 +1,6 @@
 import subprocess
 import argparse, sys
+import requests
 
 # ./pipeline.py build <arg1> <arg2> ...: builds the Docker image with the Flask application;
 def image_build(imageName, imageTag, dockerFile):
@@ -35,6 +36,14 @@ def image_deploy(imageName, imageTag):
     else:
         print("Docker deploy should have imageName and imageTag")
     return
+
+def get_test(endPoint):
+    if endPoint != None:
+        r = requests.get(endPoint)
+        print(r.status_code)
+    else:
+        print("Invalid end point")
+    return
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("stage", help="mandatory argument")
@@ -43,7 +52,7 @@ def main():
     parser.add_argument("--dockerFilePath", help="optional argument")
     parser.add_argument("--containerRegistryUsername", help="optional argument")
     parser.add_argument("--flavour", help="optional argument")
-
+    parser.add_argument("--endPoint", help="optional argument")
     params = parser.parse_args()
 
     if params.stage == "build":
@@ -52,6 +61,7 @@ def main():
         image_push(params.containerRegistryUsername, params.imageName, params.imageTag)
     elif params.stage == "deploy" and params.flavour == "docker":
         image_deploy(params.imageName, params.imageTag)
-    
+    elif params.stage == "test":
+        get_test(params.endPoint)
 if __name__ == "__main__":
     main()
