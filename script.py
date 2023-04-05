@@ -28,5 +28,5 @@ match sys.argv[1]:
     case 'test':
         print("Suntem in test")
     case _:
-        print("Try again boomer! Use build, push, deploy, test or stop! :)")
+        print("Try again! Use build, push, deploy, test or stop! :)")
         print(sys.argv[1:])
