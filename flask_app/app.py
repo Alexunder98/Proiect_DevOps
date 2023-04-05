@@ -22,6 +22,6 @@ def index():
     return render_template("meme_index.html", meme_pic=meme_pic, subreddit=subreddit)
 
 # Flask is going to run on our host, port 80
-app.run(host="0.0.0.0", port=80)
+app.run(host="0.0.0.0", port=3000)
 
 
