@@ -19,7 +19,7 @@ def image_push(registryName, imageName, imageTag):
     if registryName != None and imageName != None and imageTag != None:
         # docker tag devschool dorin123/devschool:latest
         # docker push dorin123/devschool:latest
-        docker_tag = "docker tag " + imageName + " " + registryName + "/" + imageName + ":" + imageTag
+        docker_tag = "docker tag " + imageName + ":" + imageTag + " " + registryName + "/" + imageName + ":" + imageTag
         docker_push = "docker push " + registryName + "/" + imageName + ":" + imageTag
         subprocess.run(docker_tag, shell = True)
         subprocess.run(docker_push, shell = True)
@@ -31,7 +31,7 @@ def image_push(registryName, imageName, imageTag):
 def image_deploy(imageName, imageTag):
     if imageTag != None and imageName != None:
         # docker container run -d -p 80:80 dorin123/devschool:latest
-        docker_run = "docker container run -d -p 80:80 " + imageName + ":" + imageTag
+        docker_run = "docker container run -d -p 5001:5001 " + imageName + ":" + imageTag
         subprocess.run(docker_run, shell = True)
     else:
         print("Docker deploy should have imageName and imageTag")
@@ -39,12 +39,10 @@ def image_deploy(imageName, imageTag):
 
 def get_test(endPoint):
     if endPoint != None:
-        r = requests.get(endPoint)
-        print(r)
+        subprocess.run("curl -i " + endPoint, shell = True)
     else:
         print("Invalid end point")
     return
-    
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("stage", help="mandatory argument")
@@ -66,4 +64,3 @@ def main():
         get_test(params.endPoint)
 if __name__ == "__main__":
     main()
-
