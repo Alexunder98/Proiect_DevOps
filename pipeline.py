@@ -19,7 +19,7 @@ def image_push(registryName, imageName, imageTag):
     if registryName != None and imageName != None and imageTag != None:
         # docker tag devschool dorin123/devschool:latest
         # docker push dorin123/devschool:latest
-        docker_tag = "docker tag " + imageName + " " + registryName + "/" + imageName + ":" + imageTag
+        docker_tag = "docker tag " + imageName + ":" + imageTag + " " + registryName + "/" + imageName + ":" + imageTag
         docker_push = "docker push " + registryName + "/" + imageName + ":" + imageTag
         subprocess.run(docker_tag, shell = True)
         subprocess.run(docker_push, shell = True)
