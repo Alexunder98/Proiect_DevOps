@@ -39,8 +39,7 @@ def image_deploy(imageName, imageTag):
 
 def get_test(endPoint):
     if endPoint != None:
-        r = requests.get(endPoint)
-        print(r.status_code)
+        subprocess.run("curl -i " + endPoint, shell = True)
     else:
         print("Invalid end point")
     return
