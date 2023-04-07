@@ -1,1 +1,7 @@
-flask_app/requirments.txt
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!./flask_app
+!Dockerfile
