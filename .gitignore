@@ -1,7 +1,7 @@
-# Ignore everything
-*
+# # Ignore everything
+# *
 
-# But not these files...
-!.gitignore
-!./flask_app
-!Dockerfile
+# # But not these files...
+# !.gitignore
+# !./flask_app
+# !Dockerfile
