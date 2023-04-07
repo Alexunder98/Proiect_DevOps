@@ -12,6 +12,7 @@ result_json_list = []
 def parse_json_api():
     people_from_sw = requests.get('https://swapi.dev/api/people')
     chars = people_from_sw.json()["results"]
+    print(chars)
     id = 0
     for val in chars:
         result_json_list.append(
@@ -26,6 +27,15 @@ def parse_json_api():
 @app.route("/chars", methods=['GET'])
 def get_json():
     return result_json_list
+
+@app.route("/chars/<int:id>", methods=['GET'])
+def get_char(id):
+    if id not in [char["id"] for char in result_json_list]:
+        return jsonify({"status": "id is not found"}), 400
+    else:
+        for char in result_json_list:
+            if char["id"] == id:
+                return char
 
 @app.route("/chars", methods=['POST'])
 def post_char():
@@ -78,9 +88,11 @@ def del_char(id):
                 return jsonify({"status" : "ok"}), 200
     else:
         return jsonify({"status" : "id not found"}), 404
+
 @app.route("/liveness")
 def liveness():
     return "ING DevSchool 2023 Project LIVENESS"
+
 # Flask is going to run on our host, port 80
 parse_json_api()
 app.run(host = "0.0.0.0", port = 80)
