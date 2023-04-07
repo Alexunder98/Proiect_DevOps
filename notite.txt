@@ -1,6 +1,0 @@
-docker image build -t <image_name>:<version> .
-docker run -d -p 5001:5001 <image_name>:<version>
-
-
-docker image build -t thealexxunder/devops_project:0.9 .
-docker run -d -p 5001:5001 thealexxunder/devops_project:0.9
