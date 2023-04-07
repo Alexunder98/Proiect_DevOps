@@ -1,4 +1,4 @@
-python3 pipeline.py build --imageName=devschool --imageTag=latest --dockerFilePath=./flask_app
-python3 pipeline.py push --containerRegistryUsername=dorin123 --imageName=devschool --imageTag=latest
-python3 pipeline.py deploy --flavour=docker --imageName=dorin123/devschool --imageTag=latest
-python3 pipeline.py test --endPoint=https://cataas.com/cat/cute 
+python3 pipeline.py build --imageName=devschool --imageTag=0.1 --dockerFilePath=./flask_app
+python3 pipeline.py push --containerRegistryUsername=dorin123 --imageName=devschool --imageTag=0.1
+python3 pipeline.py deploy --flavour=docker --imageName=dorin123/devschool --imageTag=0.1
+python3 pipeline.py test --endPoint=https://localhost/:80

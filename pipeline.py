@@ -1,6 +1,6 @@
 import subprocess
 import argparse, sys
-import requests
+import requests, json
 
 # ./pipeline.py build <arg1> <arg2> ...: builds the Docker image with the Flask application;
 def image_build(imageName, imageTag, dockerFile):
@@ -17,7 +17,7 @@ def image_push(registryName, imageName, imageTag):
     # Login intro docker hub with your credentials
     subprocess.run("docker login", shell=True)
     if registryName != None and imageName != None and imageTag != None:
-        # docker tag devschool dorin123/devschool:latest
+        # docker tag devschool:latest dorin123/devschool:latest
         # docker push dorin123/devschool:latest
         docker_tag = "docker tag " + imageName + ":" + imageTag + " " + registryName + "/" + imageName + ":" + imageTag
         docker_push = "docker push " + registryName + "/" + imageName + ":" + imageTag
