@@ -1,6 +1,9 @@
+#!/usr/bin/python3
+
 import subprocess
 import argparse, sys
 import requests, json
+
 
 # ./pipeline.py build <arg1> <arg2> ...: builds the Docker image with the Flask application;
 def image_build(imageName, imageTag, dockerFile):
@@ -12,9 +15,9 @@ def image_build(imageName, imageTag, dockerFile):
         print("Build command should have params: imageName, imageTag and dockerFile path")
     return
 
+
 # ./pipeline.py push <arg1> <arg2> ...: pushes the created Docker image into a container registry;
 def image_push(registryName, imageName, imageTag):
-    # Login intro docker hub with your credentials
     subprocess.run("docker login", shell=True)
     if registryName != None and imageName != None and imageTag != None:
         # docker tag devschool:latest dorin123/devschool:latest
@@ -27,6 +30,7 @@ def image_push(registryName, imageName, imageTag):
         print("Push command should have params: registryName, imageName, imageTag")
     return
 
+
 # ./pipeline.py deploy <arg1> <arg2> ...: deploys a container with the Flask application on your local machine using Docker;
 def image_deploy(imageName, imageTag):
     if imageTag != None and imageName != None:
@@ -37,12 +41,15 @@ def image_deploy(imageName, imageTag):
         print("Docker deploy should have imageName and imageTag")
     return
 
+
 def get_test(endPoint):
     if endPoint != None:
         subprocess.run("curl -i " + endPoint, shell = True)
     else:
         print("Invalid end point")
     return
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("stage", help="mandatory argument")
@@ -62,5 +69,7 @@ def main():
         image_deploy(params.imageName, params.imageTag)
     elif params.stage == "test":
         get_test(params.endPoint)
+
+
 if __name__ == "__main__":
     main()
