@@ -6,6 +6,6 @@ COPY ./flask_app /app
 
 RUN pip install -r requirments.txt
 
-EXPOSE 5001
+EXPOSE 80
 
 CMD python ./app.py
