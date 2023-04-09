@@ -11,5 +11,5 @@
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/homepage.png"
   alt="App Homepage"
-  width="686" height="289">
+  width="640" height="360">
 </p>
