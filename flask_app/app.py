@@ -1,4 +1,4 @@
-#!usr/bin/python3
+#!/usr/bin/python3
 
 from flask import Flask, render_template
 import requests
@@ -25,13 +25,31 @@ def parse_json_api():
         id += 1
 
 
+def get_meme():
+    sr = "/ProgrammerHUmor"
+    url = "https://meme-api.com/gimme" + sr
+    # url = "https://meme-api.com/gimme"
+    response = json.loads(requests.request("GET", url).text)
+    meme_large = response["preview"][-2]
+    subreddit = response["subreddit"]
+    return meme_large, subreddit
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
 
+
+@app.route("/meme")
+def meme_page():
+    meme_pic, subreddit = get_meme()
+    return render_template("meme.html", meme_pic=meme_pic, subreddit=subreddit)
+
+
 @app.route("/chars", methods=['GET'])
 def get_json():
     return result_json_list
+
 
 @app.route("/chars/<int:id>", methods=['GET'])
 def get_char(id):
@@ -41,6 +59,7 @@ def get_char(id):
         for char in result_json_list:
             if char["id"] == id:
                 return char
+
 
 @app.route("/chars", methods=['POST'])
 def post_char():
@@ -60,6 +79,7 @@ def post_char():
     else:
         result_json_list.append(new_char)
         return jsonify({"id" : id}), 201
+
 
 @app.route("/chars/<int:id>", methods=['PUT'])
 def put_char(id):
@@ -81,6 +101,7 @@ def put_char(id):
         result_json_list.append({ "Name" : name, "Birth Year" : by, "Skin Color" : sk, "Hair color" : hc, "Mass" : mass, "id" : id})
     return jsonify({"id" : id}), 201
 
+
 @app.route("/chars/<int:id>", methods=['DELETE'])
 def del_char(id):
     if not request.is_json:
@@ -94,12 +115,12 @@ def del_char(id):
     else:
         return jsonify({"status" : "id not found"}), 404
 
+
 @app.route("/liveness")
 def liveness():
-    return "ING DevSchool 2023 Project LIVENESS"
+    return "\nING DevSchool 2023 Final Project LIVENESS\n"
 
-# Flask is going to run on our host, port 80
+
 parse_json_api()
+
 app.run(host = "0.0.0.0", port = 80)
-
-
