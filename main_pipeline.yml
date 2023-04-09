@@ -1,0 +1,131 @@
+trigger: none
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'ServCon'
+  # Path to Dockerfile
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  # Image name
+  imageRepository: 'app'
+  # Container registry name
+  containerRegistry: 'crdevsc'
+  # Image tag
+  tag: 4 #'$(Build.BuildId)'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  # Agent pool name
+  agentPool: 'my_agent'
+
+  # Azure resource group name
+  res_group: 'rg_devsc'
+  # Azure container registry name
+  acr_name: 'crdevsc'
+  # Azure key-vault name
+  akv_name: 'crdevsc-vault'
+  # Azure container instance name
+  aci_name: 'continst-$(tag)'
+
+
+stages:
+# Build Stage
+- stage: Build
+  displayName: Build 
+  jobs:
+  - job: Build
+    displayName: Build Docker Image
+    pool:
+      vmImage: $(vmImageName)
+      name: $(agentPool)
+
+    steps:
+    - task: Docker@2
+      displayName: Building the image...
+      inputs:
+        command: 'build'
+        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: $(imageRepository)
+        Dockerfile: $(dockerfilePath)
+        tags: |
+          $(tag)
+
+# Push stage
+- stage: Push
+  displayName: Push 
+  jobs:
+  - job: Push
+    displayName: Push Docker Image
+    pool:
+      vmImage: $(vmImageName)
+      name: $(agentPool)
+
+    steps:
+    - task: Docker@2
+      displayName: Pushing the image...
+      inputs:
+        command: 'push'
+        repository: $(imageRepository)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+
+# Deploy stage
+- stage: Deploy
+  displayName: Deploy 
+  jobs:
+  - job: Deploy
+    displayName: Deploy App
+    pool:
+      vmImage: $(vmImageName)
+      name: $(agentPool)
+      
+    steps:
+    - task: Bash@3
+      displayName: Creating container
+      inputs:
+        targetType: 'inline'
+        script: |
+          az container create \
+              --resource-group $(res_group) \
+              --name $(aci_name) \
+              --image $(acr_name).azurecr.io/$(imageRepository):$(tag) \
+              --registry-login-server $(acr_name).azurecr.io \
+              --registry-username $(az keyvault secret show --vault-name $(akv_name) --name $(acr_name)-pull-usr --query value -o tsv) \
+              --registry-password $(az keyvault secret show --vault-name $(akv_name) --name $(acr_name)-pull-pwd --query value -o tsv) \
+              --ip-address public \
+              --ports 80 \
+              --query ipAddress.ip \
+              --output table \
+
+# Test stage
+- stage: Test
+  displayName: Test
+  jobs:
+  - job: Test
+    displayName: Test Liveness
+    pool:
+      vmImage: $(vmImageName)
+      name: $(agentPool)
+    steps:
+    - task: Bash@3
+      displayName: Send Request to Liveness Endpoint
+      inputs:
+        targetType: 'inline'
+        script: |
+          IP_ADDR=$(az container show --name $(aci_name) --resource-group $(res_group) --query ipAddress.ip --output tsv);
+          echo "Checking /liveness of $IP_ADDR";
+          for i in {1..10}; do
+            RESPONSE=$(curl -sL -w "%{http_code}\\n" "http://$IP_ADDR/liveness" -o /dev/null)
+            if [[ $RESPONSE == 200 ]]; then
+              echo "Liveness check passed"
+              exit 0
+            else
+              echo "Attempt $i Liveness check failed with response code $RESPONSE. Attempts left $((10-$i))."
+            fi
+            # sleep 30 # 30 seconds delay between each attempt
+          done
+          echo "Failed to pass liveness check after 10 attempts"
+          exit 1
