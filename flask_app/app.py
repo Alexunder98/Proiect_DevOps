@@ -28,7 +28,6 @@ def parse_json_api():
 def get_meme():
     sr = "/ProgrammerHUmor"
     url = "https://meme-api.com/gimme" + sr
-    # url = "https://meme-api.com/gimme"
     response = json.loads(requests.request("GET", url).text)
     meme_large = response["preview"][-2]
     subreddit = response["subreddit"]
