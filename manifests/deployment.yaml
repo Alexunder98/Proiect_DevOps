@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: devschool-container
-        image: dorin123/devschool:0.1
+        image: <imageName>:<imageTag>
         ports:
         - containerPort: 80
