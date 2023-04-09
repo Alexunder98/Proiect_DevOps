@@ -40,15 +40,12 @@ def index():
     return render_template("index.html")
 
 
-<<<<<<< HEAD
-=======
 @app.route("/meme")
 def meme_page():
     meme_pic, subreddit = get_meme()
     return render_template("meme.html", meme_pic=meme_pic, subreddit=subreddit)
 
 
->>>>>>> new
 @app.route("/chars", methods=['GET'])
 def get_json():
     return result_json_list
@@ -124,10 +121,6 @@ def liveness():
     return "\nING DevSchool 2023 Final Project LIVENESS\n"
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> new
 parse_json_api()
 
 app.run(host = "0.0.0.0", port = 80)
