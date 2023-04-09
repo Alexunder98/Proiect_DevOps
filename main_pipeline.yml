@@ -5,13 +5,15 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'ServCon'
+  # dockerRegistryServiceConnection: 'drsc'
   # Path to Dockerfile
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  # App name
+  appName: 'myapp'
   # Image name
-  imageRepository: 'app'
+  imageRepository: '$(appName)'
   # Container registry name
-  containerRegistry: 'crdevsc'
+  containerRegistry: 'cr'
   # Image tag
   tag: 4 #'$(Build.BuildId)'
 
@@ -21,13 +23,13 @@ variables:
   agentPool: 'my_agent'
 
   # Azure resource group name
-  res_group: 'rg_devsc'
+  res_group: '$(appName)-rg'
   # Azure container registry name
-  acr_name: 'crdevsc'
+  acr_name: '$(containerRegistry)'
   # Azure key-vault name
-  akv_name: 'crdevsc-vault'
+  akv_name: '$(acr_name)-vault'
   # Azure container instance name
-  aci_name: 'continst-$(tag)'
+  aci_name: 'ci-$(tag)'
 
 
 stages:
@@ -42,6 +44,14 @@ stages:
       name: $(agentPool)
 
     steps:
+  - task: Bash@3
+    displayName: Creating res group and cont registry
+    inputs:
+      targetType: 'inline'
+      script: |
+        az group create --resource-group $res_group --location westeurope;
+        az acr create --resource-group $res_group --name $acr_name --sku Basic --location westeurope
+  
     - task: Docker@2
       displayName: Building the image...
       inputs:
