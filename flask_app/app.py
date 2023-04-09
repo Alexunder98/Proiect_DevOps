@@ -25,11 +25,30 @@ def parse_json_api():
         id += 1
 
 
+def get_meme():
+    sr = "/ProgrammerHUmor"
+    url = "https://meme-api.com/gimme" + sr
+    # url = "https://meme-api.com/gimme"
+    response = json.loads(requests.request("GET", url).text)
+    meme_large = response["preview"][-2]
+    subreddit = response["subreddit"]
+    return meme_large, subreddit
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
 
 
+<<<<<<< HEAD
+=======
+@app.route("/meme")
+def meme_page():
+    meme_pic, subreddit = get_meme()
+    return render_template("meme.html", meme_pic=meme_pic, subreddit=subreddit)
+
+
+>>>>>>> new
 @app.route("/chars", methods=['GET'])
 def get_json():
     return result_json_list
@@ -102,11 +121,13 @@ def del_char(id):
 
 @app.route("/liveness")
 def liveness():
-    return "ING DevSchool 2023 Project LIVENESS"
+    return "\nING DevSchool 2023 Final Project LIVENESS\n"
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> new
 parse_json_api()
 
 app.run(host = "0.0.0.0", port = 80)
-
-
