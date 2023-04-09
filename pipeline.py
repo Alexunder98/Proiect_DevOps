@@ -1,6 +1,5 @@
-import subprocess
-import argparse, sys
-import requests, json
+import subprocess, argparse, sys, requests, json, yaml
+
 
 # ./pipeline.py build <arg1> <arg2> ...: builds the Docker image with the Flask application;
 def image_build(imageName, imageTag, dockerFile):
@@ -43,6 +42,21 @@ def get_test(endPoint):
     else:
         print("Invalid end point")
     return
+def k8s_deploy(imageName, imageTag, pathManifest):
+    data = dict()
+    with open(pathManifest, 'r') as f:
+        data = yaml.safe_load(f)
+        if data['kind'] == "Deployment":
+            data['spec']['template']['spec']['containers'][0]['image'] = imageName + ":" + imageTag
+    f.close()
+    with open(pathManifest, 'w') as file:
+        yaml.dump(data, file, sort_keys=False)
+    file.close()
+
+
+    subprocess.run("kubectl apply -f " + pathManifest, shell = True)
+    return
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("stage", help="mandatory argument")
@@ -52,6 +66,7 @@ def main():
     parser.add_argument("--containerRegistryUsername", help="optional argument")
     parser.add_argument("--flavour", help="optional argument")
     parser.add_argument("--endPoint", help="optional argument")
+    parser.add_argument("--pathManifest", help="optional argument")
     params = parser.parse_args()
 
     if params.stage == "build":
@@ -60,6 +75,8 @@ def main():
         image_push(params.containerRegistryUsername, params.imageName, params.imageTag)
     elif params.stage == "deploy" and params.flavour == "docker":
         image_deploy(params.imageName, params.imageTag)
+    elif params.stage == "deploy" and params.flavour == "kubernetes":
+        k8s_deploy(params.imageName, params.imageTag, params.pathManifest)
     elif params.stage == "test":
         get_test(params.endPoint)
 if __name__ == "__main__":

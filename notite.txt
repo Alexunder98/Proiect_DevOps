@@ -4,4 +4,7 @@ python3 pipeline.py deploy --flavour=docker --imageName=dorin123/devschool --ima
 python3 pipeline.py test --endPoint=https://localhost:80
 
 
+python3 pipeline.py deploy --flavour=kubernetes --imageName=dorin123/devschool --imageTag=0.1 --pathManifest=./manifests/deployment.yaml
+python3 pipeline.py deploy --flavour=kubernetes --pathManifest=./manifests/service.yaml --imageName=dorin123/devschool --imageTag=0.1 
+
 kubectl port-forward <pod-name> 8080:80
