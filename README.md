@@ -2,10 +2,11 @@
 
 ## Features
 
-- A FLASK app that 
-- Local python script
-- Docker Deploy  on local
-- Azure Deploy
+- FLASK app
+- Python script
+- Local Docker deploy using the python script
+- Azure Cloud deploy uisng pipeline
+- BONUS 1: Local Kubernetes Cluster deploy  
 
 
 <p align="center">

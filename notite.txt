@@ -1,0 +1,25 @@
+# Dorin
+
+python3 pipeline.py build --imageName=devschool --imageTag=0.1 --dockerFilePath=./flask_app
+python3 pipeline.py push --containerRegistryUsername=dorin123 --imageName=devschool --imageTag=0.1
+python3 pipeline.py deploy --flavour=docker --imageName=dorin123/devschool --imageTag=0.1
+python3 pipeline.py test --endPoint=http://localhost:80/liveness
+
+python3 pipeline.py deploy --flavour=kubernetes --imageName=dorin123/devschool --imageTag=0.1 --pathManifest=./manifests/deployment.yaml
+python3 pipeline.py deploy --flavour=kubernetes --pathManifest=./manifests/service.yaml --imageName=dorin123/devschool --imageTag=0.1 
+
+kubectl port-forward <pod-name> 8080:80
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+# Alex
+
+python3 pipeline.py build --imageName=devschool --imageTag=0.1 --dockerFilePath=.
+python3 pipeline.py push --containerRegistryUsername=thealexxunder --imageName=devschool --imageTag=0.1
+python3 pipeline.py deploy --flavour=docker --imageName=thealexxunder/devschool --imageTag=0.1
+python3 pipeline.py test --endPoint=http://localhost:80/liveness
+
+python3 pipeline.py deploy --flavour=kubernetes --imageName=thealexxunder/devschool --imageTag=0.1 --pathManifest=./manifests/deployment.yaml
+python3 pipeline.py deploy --flavour=kubernetes --pathManifest=./manifests/service.yaml --imageName=thealexxunder/devschool --imageTag=0.1 
+
+kubectl port-forward <pod-name> 8080:80
+

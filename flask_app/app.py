@@ -117,7 +117,7 @@ def del_char(id):
 
 @app.route("/liveness")
 def liveness():
-    return "\nING DevSchool 2023 Final Project LIVENESS\n"
+    return "ING DevSchool 2023 Final Project LIVENESS\n"
 
 
 parse_json_api()
