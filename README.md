@@ -44,37 +44,32 @@
 >`python3 pipeline.py build --imageName=<image-name> --imageTag=<image-tag> --dockerFilePath=<path>`
 
 <p align="center">
-<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p1.png"
-  width="640" height="360">
+<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p1.png">
 </p>
 
 - Push the image to docker hub
 >`python3 pipeline.py push --containerRegistryUsername=<registry-username> --imageName=<image-name> --imageTag=<image-tag>`
 
 <p align="center">
-<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p2.png"
-  width="640" height="360">
+<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p2.png">
 </p>
 
 <p align="center">
-<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p3.png"
-  width="640" height="360">
+<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p3.png">
 </p>
 
 - Deploy local with docker hub
 >`python3 pipeline.py deploy --flavour=<docker> --imageName=<image-name> --imageTag=<image-tag>`
 
 <p align="center">
-<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p4.png"
-  width="640" height="360">
+<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p4.png">
 </p>
 
 - Test local
 >`python3 pipeline.py test --endPoint=<local-endpoint>`
 
 <p align="center">
-<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p5.png"
-  width="640" height="360">
+<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p5.png">
 </p>
 
 ### BONUS 1: Local Kubernetes Cluster deploy  
@@ -89,13 +84,11 @@
 ### Azure Cloud deploy uisng pipeline
 
 <p align="center">
-<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/az1.png"
-  width="640" height="360">
+<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/az1.png">
 </p>
 
 - App Homepage
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/homepage.png"
-  alt="App Homepage"
-  width="960" height="540">
+  alt="App Homepage">
 </p>
