@@ -20,7 +20,7 @@
 </p>
 
 
-- _PUT localhost/chars/<id>_
+- _PUT localhost/chars/id_
 
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/put_char.png"
@@ -28,7 +28,7 @@
   width="640" height="360">
 </p>
 
-- _DELETE localhost/chars/<id>_
+- _DELETE localhost/chars/id_
 
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/del_char.png"
