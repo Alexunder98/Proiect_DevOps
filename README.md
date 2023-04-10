@@ -13,7 +13,6 @@
 
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/get_liveness.png"
-  alt="App Homepage"
   width="640" height="360">
 </p>
 
@@ -21,7 +20,6 @@
 
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/get_chars.png"
-  alt="App Homepage"
   width="640" height="360">
 </p>
 
@@ -30,7 +28,6 @@
 
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/put_char.png"
-  alt="App Homepage"
   width="640" height="360">
 </p>
 
@@ -38,7 +35,6 @@
 
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/del_char.png"
-  alt="App Homepage"
   width="640" height="360">
 </p>
 
@@ -49,7 +45,6 @@
 
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p1.png"
-  alt="App Homepage"
   width="640" height="360">
 </p>
 
@@ -58,13 +53,11 @@
 
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p2.png"
-  alt="App Homepage"
   width="640" height="360">
 </p>
 
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p3.png"
-  alt="App Homepage"
   width="640" height="360">
 </p>
 
@@ -73,7 +66,6 @@
 
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p4.png"
-  alt="App Homepage"
   width="640" height="360">
 </p>
 
@@ -82,7 +74,6 @@
 
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p5.png"
-  alt="App Homepage"
   width="640" height="360">
 </p>
 
@@ -92,15 +83,19 @@
 >`python3 pipeline.py deploy --flavour=<kubernetes> --imageName=<image-name> --imageTag=<image-tag> --pathManifest=<yaml-path>`
 
 <p align="center">
-<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p6.png"
-  alt="App Homepage"
-  width="640" height="360">
+<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p6.png">
 </p>
 
 ### Azure Cloud deploy uisng pipeline
 
 <p align="center">
+<img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/az1.png"
+  width="640" height="360">
+</p>
+
+- App Homepage
+<p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/homepage.png"
   alt="App Homepage"
-  width="640" height="360">
+  width="960" height="540">
 </p>
