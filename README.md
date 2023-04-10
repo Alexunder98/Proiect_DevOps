@@ -38,6 +38,27 @@
 
 ### Python script
 ### Local Docker deploy using the python script
+- Build an image
+```sh
+python3 pipeline.py build --imageName=<image-name> --imageTag=<image-tag> --dockerFilePath=<path>
+```
+- Push the image to docker hub
+```sh
+python3 pipeline.py push --containerRegistryUsername=<registry-username> --imageName=<image-name> --imageTag=<image-tag>
+```
+- Deploy local with docker hub
+```sh
+python3 pipeline.py deploy --flavour=<docker> --imageName=<image-name> --imageTag=<image-tag>
+```
+- Deploy local with k8s
+```sh
+python3 pipeline.py deploy --flavour=<kubernetes> --imageName=<image-name> --imageTag=<image-tag> --pathManifest=<yaml-path>
+```
+- Test local
+```sh
+python3 pipeline.py test --endPoint=<local-endpoint>
+```
+
 ### Azure Cloud deploy uisng pipeline
 ### BONUS 1: Local Kubernetes Cluster deploy  
 
