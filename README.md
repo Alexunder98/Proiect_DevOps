@@ -91,3 +91,8 @@
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/homepage.png"
   alt="App Homepage">
 </p>
+
+
+### Resources
+<p>Contaier deploy: </p>
+[https://learn.microsoft.com/en-us/azure/container-registry/container-registry-tutorial-quick-task]
