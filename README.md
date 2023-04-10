@@ -23,7 +23,6 @@
   width="640" height="360">
 </p>
 
-
 - _PUT localhost/chars/id_
 
 <p align="center">
@@ -53,7 +52,6 @@
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p2.png">
 </p>
-
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p3.png">
 </p>
@@ -87,7 +85,8 @@
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/az1.png">
 </p>
 
-- App Homepage
+### App Homepage
+
 <p align="center">
 <img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/homepage.png"
   alt="App Homepage">
