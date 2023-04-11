@@ -5,7 +5,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'drscfinaltest2'
+  dockerRegistryServiceConnection: 'drscfinaltest3'
   # Path to Dockerfile
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   # App name
@@ -13,7 +13,7 @@ variables:
   # Image name
   imageRepository: '$(appName)'
   # Container registry name
-  containerRegistry: 'crfinaltest2'
+  containerRegistry: 'crfinaltest3'
   # Image tag
   tag: 1 #'$(Build.BuildId)'
 
@@ -23,11 +23,11 @@ variables:
   agentPool: 'my_agent'
 
   # Azure resource group name
-  res_group: 'rg_final_test2'
+  res_group: 'rg_final_test3'
   # Azure container registry name
   acr_name: '$(containerRegistry)'
   # Azure key-vault name
-  akv_name: '$(acr_name)-vault-$(tag)'
+  akv_name: '$(acr_name)-vault'
   # Azure container instance name
   aci_name: 'ci-$(tag)'
 
@@ -86,11 +86,11 @@ stages:
       
     steps:
     - task: Bash@3
-      displayName: Creating key-vault
+      displayName: Create key-vault
       inputs:
         targetType: 'inline'
         script: |
-          az keyvault create --resource-group $(res_group) --name $(akv_name);
+          az keyvault create --resource-group $(res_group) --name $(akv_name) > /dev/null;
           if [ $? -eq 0 ]; then
             echo "Key vault created!"
           fi
@@ -108,7 +108,10 @@ stages:
                 --scopes $(az acr show --name $(acr_name) --query id --output tsv) \
                 --role acrpull \
                 --query password \
-                --output tsv) > /dev/null \
+                --output tsv) > /dev/null;
+          if [ $? -eq 0 ]; then
+            echo "Password stored in AKV!"
+          fi
 
     - task: Bash@3
       displayName: Store ID in AKV
@@ -118,10 +121,13 @@ stages:
           az keyvault secret set \
             --vault-name $(akv_name) \
             --name $(acr_name)-pull-usr \
-            --value $(az ad sp list --display-name $(acr_name)-pull --query [].appId --output tsv) >> /dev/null\
+            --value $(az ad sp list --display-name $(acr_name)-pull --query [].appId --output tsv) >> /dev/null;
+          if [ $? -eq 0 ]; then
+            echo "ID stored in AKV!"
+          fi
 
     - task: Bash@3
-      displayName: Creating container
+      displayName: Create container instance
       inputs:
         targetType: 'inline'
         script: |
