@@ -1,0 +1,169 @@
+trigger: none
+
+resources:
+- repo: self
+
+variables:
+  # Container registry service connection established during pipeline creation
+  dockerRegistryServiceConnection: 'drscfinaltest2'
+  # Path to Dockerfile
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  # App name
+  appName: 'myapp'
+  # Image name
+  imageRepository: '$(appName)'
+  # Container registry name
+  containerRegistry: 'crfinaltest2'
+  # Image tag
+  tag: 1 #'$(Build.BuildId)'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+  # Agent pool name
+  agentPool: 'my_agent'
+
+  # Azure resource group name
+  res_group: 'rg_final_test2'
+  # Azure container registry name
+  acr_name: '$(containerRegistry)'
+  # Azure key-vault name
+  akv_name: '$(acr_name)-vault-$(tag)'
+  # Azure container instance name
+  aci_name: 'ci-$(tag)'
+
+
+stages:
+# Build Stage
+- stage: Build
+  displayName: Build 
+  jobs:
+  - job: Build
+    displayName: Build Docker Image
+    pool:
+      vmImage: $(vmImageName)
+      name: $(agentPool)
+
+    steps:
+    - task: Docker@2
+      displayName: Building the image...
+      inputs:
+        command: 'build'
+        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: $(imageRepository)
+        Dockerfile: $(dockerfilePath)
+        tags: |
+          $(tag)
+
+# Push stage
+- stage: Push
+  displayName: Push 
+  jobs:
+  - job: Push
+    displayName: Push Docker Image
+    pool:
+      vmImage: $(vmImageName)
+      name: $(agentPool)
+
+    steps:
+    - task: Docker@2
+      displayName: Pushing the image...
+      inputs:
+        command: 'push'
+        repository: $(imageRepository)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+
+# Deploy stage
+- stage: Deploy
+  displayName: Deploy 
+  jobs:
+  - job: Deploy
+    displayName: Deploy App
+    pool:
+      vmImage: $(vmImageName)
+      name: $(agentPool)
+      
+    steps:
+    - task: Bash@3
+      displayName: Creating key-vault
+      inputs:
+        targetType: 'inline'
+        script: |
+          az keyvault create --resource-group $(res_group) --name $(akv_name);
+          if [ $? -eq 0 ]; then
+            echo "Key vault created!"
+          fi
+
+    - task: Bash@3
+      displayName: Store password in AKV
+      inputs:
+        targetType: 'inline'
+        script: |
+          az keyvault secret set \
+                --vault-name $(akv_name) \
+                --name $(acr_name)-pull-pwd \
+                --value $(az ad sp create-for-rbac \
+                --name $(acr_name)-pull \
+                --scopes $(az acr show --name $(acr_name) --query id --output tsv) \
+                --role acrpull \
+                --query password \
+                --output tsv) > /dev/null \
+
+    - task: Bash@3
+      displayName: Store ID in AKV
+      inputs:
+        targetType: 'inline'
+        script: |
+          az keyvault secret set \
+            --vault-name $(akv_name) \
+            --name $(acr_name)-pull-usr \
+            --value $(az ad sp list --display-name $(acr_name)-pull --query [].appId --output tsv) >> /dev/null\
+
+    - task: Bash@3
+      displayName: Creating container
+      inputs:
+        targetType: 'inline'
+        script: |
+          sleep 30;
+          az container create \
+              --resource-group $(res_group) \
+              --name $(aci_name) \
+              --image $(acr_name).azurecr.io/$(imageRepository):$(tag) \
+              --registry-login-server $(acr_name).azurecr.io \
+              --registry-username $(az keyvault secret show --vault-name $(akv_name) --name $(acr_name)-pull-usr --query value -o tsv) \
+              --registry-password $(az keyvault secret show --vault-name $(akv_name) --name $(acr_name)-pull-pwd --query value -o tsv) \
+              --ip-address public \
+              --ports 80 \
+              --query ipAddress.ip \
+              --output table \
+
+# Test stage
+- stage: Test
+  displayName: Test
+  jobs:
+  - job: Test
+    displayName: Test Liveness
+    pool:
+      vmImage: $(vmImageName)
+      name: $(agentPool)
+    steps:
+    - task: Bash@3
+      displayName: Send Request to Liveness Endpoint
+      inputs:
+        targetType: 'inline'
+        script: |
+          IP_ADDR=$(az container show --name $(aci_name) --resource-group $(res_group) --query ipAddress.ip --output tsv);
+          echo "Checking /liveness of $IP_ADDR";
+          for i in {1..10}; do
+            RESPONSE=$(curl -sL -w "%{http_code}\\n" "http://$IP_ADDR/liveness" -o /dev/null)
+            if [[ $RESPONSE == 200 ]]; then
+              echo "Liveness check passed"
+              exit 0
+            else
+              echo "Attempt $i Liveness check failed with response code $RESPONSE. Attempts left $((10-$i))."
+            fi
+            # sleep 30 # 30 seconds delay between each attempt
+          done
+          echo "Failed to pass liveness check after 10 attempts"
+          exit 1
