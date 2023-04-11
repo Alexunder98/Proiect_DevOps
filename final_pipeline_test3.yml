@@ -5,7 +5,7 @@ resources:
 
 variables:
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: 'drscfinaltest3'
+  dockerRegistryServiceConnection: 'drscfinal'
   # Path to Dockerfile
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   # App name
@@ -13,7 +13,7 @@ variables:
   # Image name
   imageRepository: '$(appName)'
   # Container registry name
-  containerRegistry: 'crfinaltest3'
+  containerRegistry: 'crfinal'
   # Image tag
   tag: 1 #'$(Build.BuildId)'
 
@@ -23,7 +23,7 @@ variables:
   agentPool: 'my_agent'
 
   # Azure resource group name
-  res_group: 'rg_finaltest3'
+  res_group: 'rg_final'
   # Azure container registry name
   acr_name: '$(containerRegistry)'
   # Azure key-vault name
