@@ -23,7 +23,7 @@ variables:
   agentPool: 'my_agent'
 
   # Azure resource group name
-  res_group: 'rg_final_test3'
+  res_group: 'rg_finaltest3'
   # Azure container registry name
   acr_name: '$(containerRegistry)'
   # Azure key-vault name
