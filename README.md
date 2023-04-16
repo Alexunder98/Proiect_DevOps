@@ -73,7 +73,7 @@ In the Test stage, a Bash script sends a request to the /liveness endpoint of th
 <p align="center"><img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/liveness_test.png"></p>
 
 
-#### DEMO: Local Docker deploy using the python script
+### DEMO: Local Docker deploy using the python script
 
 - Build an image: `python3 pipeline.py build --imageName=<image-name> --imageTag=<image-tag> --dockerFilePath=<path>`
 
@@ -94,13 +94,13 @@ In the Test stage, a Bash script sends a request to the /liveness endpoint of th
 
 <p align="center"><img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p5.png"></p>
 
-#### BONUS 1: Local Kubernetes Cluster deploy  
+##### BONUS 1: Local Kubernetes Cluster deploy  
 
 - Deploy local with k8s: `python3 pipeline.py deploy --flavour=<kubernetes> --imageName=<image-name> --imageTag=<image-tag> --pathManifest=<yaml-path>`
 
 <p align="center"><img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/p6.png"></p>
 
-#### DEMO: FLASK APP - GET, PUT, DELETE
+### DEMO: FLASK APP - GET, PUT, DELETE
 
 - GET localhost/chars
 <p align="center">
@@ -113,4 +113,9 @@ In the Test stage, a Bash script sends a request to the /liveness endpoint of th
 <p align="center"><img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/del_char.png"></p>
 
 ### Resources
+- [Star Wars Api](https://swapi.dev/)
+- [Meme Api](https://github.com/D3vd/Meme_Api)
+- [Flask App](https://www.youtube.com/watch?v=5aYpkLfkgRE)
+- [Dockerfile](https://devopscube.com/build-docker-image/)
+- [ACR Build and Push](https://learn.microsoft.com/en-us/azure/devops/pipelines/ecosystems/containers/acr-template?view=azure-devops)
 - [ACR DEPLOY](https://learn.microsoft.com/en-us/azure/container-registry/container-registry-tutorial-quick-task)
