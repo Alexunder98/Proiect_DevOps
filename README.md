@@ -64,7 +64,7 @@ In the Test stage, a Bash script sends a request to the /liveness endpoint of th
   alt="App Meme page">
 </p>
 
-### Azure Devops - Cloud deploy uisng pipeline
+### Azure Devops - Cloud deploy using pipeline
 
 <p align="center"><img src="https://github.com/Alexunder98/Proiect_DevOps/blob/master/img/stages.png"></p>
 
